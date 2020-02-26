@@ -1,34 +1,30 @@
-# LightMyPy
-A lightweight python class to manipulate MySQL database.
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
-### How to use
+from LightMysql import LightMysql
 
-```python
+if __name__ == '__main__':
 
-# config info, necessary parameters host, port, user, passwd, db
-dbconfig = {'host':'127.0.0.1',
-'port': 3306,
-'user':'danfengcao',
-'passwd':'123456',
-'db':'test',
-'charset':'utf8'}
+    # 配置信息，其中host, port, user, passwd, db为必需
+    dbconfig = {'host':'127.0.0.1',
+                'port': 3306,
+                'user':'danfengcao',
+                'passwd':'123456',
+                'db':'test',
+                'charset':'utf8'}
 
-db = LightMysql(dbconfig)
+    db = LightMysql(dbconfig) # 创建LightMysql对象，若连接超时，会自动重连
 
-# use select() to select or show
-sql_select = "SELECT * FROM Customer"
-result_all = db.select(sql_select) # return all data
-result_count = db.select(sql_select, 'count') # return number of lines
-result_one = db.select(sql_select, 'one') # return one row
+    # 查找(select, show)都使用query()函数
+    sql_select = "SELECT * FROM Customer"
+    result_all = db.query(sql_select) # 返回全部数据
+    result_count = db.query(sql_select, 'count') # 返回有多少行
+    result_one = db.query(sql_select, 'one') # 返回一行
 
-# use dml() to insert, update and delete
-sql_update = "update Customer set Cost=2 where Id=2"
-db.dml(sql_update)
-sql_insert = "insert into Customer value(1,'abc')"
-result_insert = db.dml(sql_insert)
+    # 增删改都使用dml()函数
+    sql_update = "update Customer set Cost=2 where Id=2"
+    result_update = db.dml(sql_update)
+    sql_delete = "delete from Customer where Id=2"
+    result_delete = db.dml(sql_delete)
 
-# user query() to other operations
-sql_query = "create table test0 (`ShowMapID` int(11))"
-result_query = db.query(sql_query)
-
-```
+    db.close() # 操作结束，关闭对象
